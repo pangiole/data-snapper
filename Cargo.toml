@@ -1,8 +1,11 @@
 [package]
-name = "skylight-snapper"
+name = "data-snapper"
 version = "0.1.0"
 edition = "2024"
 
 [dependencies]
-tokio = { version = "1.53.1", default-features = false, features = ["macros", "rt", "net"] }
-tokio-postgres = { version = "0.7.18", default-features = false, features = ["runtime"]}
+anyhow = { version = "1.0.104", default-features = false }
+tempfile = {  version = "3.27.0", default-features = false, features = ["default"] }
+tokio = { version = "1.53.1", default-features = false, features = ["macros", "rt", "net", "fs", "io-util"] }
+tokio-postgres = { version = "0.7.18", default-features = false, features = ["runtime", "with-chrono-0_4"]}
+

@@ -1,0 +1,26 @@
+---
+title: data-snapper
+---
+classDiagram
+
+    class TableIntrospector {
+        <<interface>>
+        +introspect_table(table_name: &str) TableMetadata
+    }
+
+    class TableMetadata {
+        +name: String
+        +schema: Option~String~
+        +columns: Vec~ColumnMetadata~
+        +primary_key: Option~Vec~String~~
+    }
+
+    class ColumnMetadata {
+        +name: String
+        +data_type: String
+        +belongs_to_primary_key: Boolean
+    }
+
+    TableIntrospector ..> TableMetadata : produces
+    TableMetadata "1" *-- "1..*" ColumnMetadata : contains
+
