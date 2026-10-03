@@ -18,12 +18,14 @@ use std::time::SystemTime;
 static GLOBAL_SENDER: OnceLock<Sender<LogMessage>> = OnceLock::new();
 
 /// The severity of the log record
+#[allow(dead_code)]
 pub enum Severity {
     Info,
     Warn,
     Error,
 }
 
+#[allow(dead_code)]
 enum LogMessage {
     /* events   */ Record(String, Severity, SystemTime),
     /* commands */ Flush, Shutdown,
@@ -122,6 +124,7 @@ const ERROR_TAG: &str = "\x1b[31m\x1b[1mERROR\x1b[0m";
 
 
 /// Send helper used by the macros
+#[allow(dead_code)]
 pub fn send_record(severity: Severity, text: String) {
     // Note that accessing a OnceLock via .get() does not require acquiring a Mutex.
     // It is a lock-free atomic read
