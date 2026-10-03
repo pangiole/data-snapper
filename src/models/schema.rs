@@ -1,14 +1,15 @@
 //! Defines the core structs modeling database tables, columns, foreign keys, etc.
 
+#[derive(Debug)]
 pub struct TableMetadata {
-    pub name: String,
-    pub schema: Option<String>,
+    pub schema: String,
+    pub table: String,
     pub columns: Vec<ColumnMetadata>,
     pub primary_key: Option<Vec<ColumnMetadata>>,
 }
 
+#[derive(Debug)]
 pub struct ColumnMetadata {
     pub name: String,
-    pub data_type: String,
-    pub belongs_to_primary_key: bool,
+    pub tpe: String
 }

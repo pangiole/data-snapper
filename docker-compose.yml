@@ -1,0 +1,41 @@
+# Local test database for data-snapper.
+#
+# Start it with:              docker compose up -d
+# Stop it with:               docker compose down
+# Reset & re-seed test data:  docker compose down -v && docker compose up -d
+#
+# On first startup, the official Postgres image runs the scripts mounted into
+# /docker-entrypoint-initdb.d/ in alphabetical order:
+#   01-schema.sql  -> creates the `snapper` schema and all tables
+#   02-data.sql    -> truncates (safety) then seeds the rows
+#
+# The credentials below match the hardcoded connection string in src/main.rs:
+#   host=localhost user=snapper password=snapper dbname=snapper port=5432
+
+services:
+  postgres:
+    image: postgres:16-alpine
+    container_name: snapper-postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: snapper
+      POSTGRES_PASSWORD: snapper
+      POSTGRES_DB: snapper
+    ports:
+      - "5432:5432"
+    volumes:
+      # Init scripts run only the FIRST time the (empty) data volume is created.
+      # The numeric prefixes force schema to run before data, because the
+      # entrypoint executes *.sql files in alphabetical order (data.sql < schema.sql).
+      - ./test/postgres/system.sql:/docker-entrypoint-initdb.d/01-system.sql:ro
+      - ./test/postgres/schema.sql:/docker-entrypoint-initdb.d/02-schema.sql:ro
+      - ./test/postgres/data.sql:/docker-entrypoint-initdb.d/03-data.sql:ro
+      - pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U snapper -d snapper"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+volumes:
+  pgdata:

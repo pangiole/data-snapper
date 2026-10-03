@@ -4,8 +4,9 @@ version = "0.1.0"
 edition = "2024"
 
 [dependencies]
-anyhow = { version = "1.0.104", default-features = false }
+anyhow = { version = "1.0.104"}
+humantime = { version = "2.4.0" }
 tempfile = {  version = "3.27.0", default-features = false, features = ["default"] }
 tokio = { version = "1.53.1", default-features = false, features = ["macros", "rt", "net", "fs", "io-util"] }
-tokio-postgres = { version = "0.7.18", default-features = false, features = ["runtime", "with-chrono-0_4"]}
+tokio-postgres = { version = "0.7.18", default-features = false, features = ["runtime"]}
 
